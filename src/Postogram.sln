@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postogram.Common", "Postogram.Common\Postogram.Common.csproj", "{5B840F80-B93E-46D4-A509-521ED2006A40}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postogram.Common", "Postogram.Common\Postogram.Common.csproj", "{5B840F80-B93E-46D4-A509-521ED2006A40}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{6494D835-C522-4FBD-96E5-EB02DABE08D1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postogram.InstagramClient", "Postogram.InstagramClient\Postogram.InstagramClient.csproj", "{0639B8CC-F048-45FC-A35D-31DDC05DB688}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Postogram.Server", "Postogram.Server\Postogram.Server.csproj", "{272E3CBE-BF80-4630-A8BD-A7D189545596}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{0639B8CC-F048-45FC-A35D-31DDC05DB688}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0639B8CC-F048-45FC-A35D-31DDC05DB688}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0639B8CC-F048-45FC-A35D-31DDC05DB688}.Release|Any CPU.Build.0 = Release|Any CPU
+		{272E3CBE-BF80-4630-A8BD-A7D189545596}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{272E3CBE-BF80-4630-A8BD-A7D189545596}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{272E3CBE-BF80-4630-A8BD-A7D189545596}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{272E3CBE-BF80-4630-A8BD-A7D189545596}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
