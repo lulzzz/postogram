@@ -7,20 +7,19 @@ using static System.Environment;
 
 namespace Postogram.Common
 {
-    public static class FileHelper
+    public class FileHelper
     {
         private const string AppName = "Postogram";
         private const string LogDirectory = "Logs";
 
-        public static DirectoryInfo GetDirectory(Location location, string subDirectory = null)
+        public DirectoryInfo GetDirectory(Location location, string subDirectory = null)
         {
             string basePath;
             switch (location)
             {
                 case Location.Application:
-                    basePath = Path.Combine(
-                        Environment.GetFolderPath(SpecialFolder.CommonApplicationData),
-                        AppName);
+                    var commonAppData = GetFolderPath(SpecialFolder.CommonApplicationData);
+                    basePath = Path.Combine(commonAppData, AppName);
                     break;
                 case Location.Log:
                     basePath = GetDirectory(Location.Application, LogDirectory).FullName;
@@ -35,7 +34,7 @@ namespace Postogram.Common
             return EnsureDirectoryExists(path);
         }
 
-        public static string GetFile(Location location, string subDirectory, string file)
+        public string GetFile(Location location, string subDirectory, string file)
         {
             if(String.IsNullOrEmpty(file))
             {
@@ -46,11 +45,11 @@ namespace Postogram.Common
             return Path.Combine(dir.FullName, file);
         }
 
-        public static string GetFile(Location location, string file) =>
+        public string GetFile(Location location, string file) =>
             GetFile(location, null, file);
 
 
-        private static DirectoryInfo EnsureDirectoryExists(string path)
+        private DirectoryInfo EnsureDirectoryExists(string path)
         {
             var di = new DirectoryInfo(path);
             if (!di.Exists)
