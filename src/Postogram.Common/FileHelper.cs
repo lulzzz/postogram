@@ -37,6 +37,11 @@ namespace Postogram.Common
 
         public static string GetFile(Location location, string subDirectory, string file)
         {
+            if(String.IsNullOrEmpty(file))
+            {
+                throw new ArgumentNullException(nameof(file));
+            }
+
             var dir = GetDirectory(location, subDirectory);
             return Path.Combine(dir.FullName, file);
         }
