@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using InstaSharper.API;
@@ -9,21 +10,31 @@ using InstaSharper.API.Builder;
 using InstaSharper.Classes;
 using InstaSharper.Classes.Models;
 using Postogram.Common;
+using Postogram.Common.Logger;
 
 namespace Postogram.InstagramClient.Poster
 {
     public class InstaPoster : IPoster
-    {
-        private readonly string _login;
-        private readonly string _password;
-
+    { 
         private IInstaApi _api;
+        private ILogWriter _logger;
+
+        private readonly FileHelper _fileHelper;
+        private readonly UserSessionData _userData;
+
+        private static readonly HttpClient _httpClient = new HttpClient();
+
         private bool IsAuthenticated => _api?.IsUserAuthenticated ?? false;
 
-        public InstaPoster(InstagramConfiguration configuration)
+        public InstaPoster(InstagramConfiguration configuration, FileHelper fileHelper, ILogger logger)
         {
-            _login = configuration.Login;
-            _password = configuration.Password;
+            _fileHelper = fileHelper;
+            _logger = logger.CreateWriter<InstaPoster>();
+            _userData = new UserSessionData()
+            {
+                UserName = configuration.Login,
+                Password = configuration.Password
+            };
         }
 
         public void Post(Content content)
@@ -79,7 +90,7 @@ namespace Postogram.InstagramClient.Poster
 
             if (!result.Succeeded)
             {
-                throw new NotImplementedException();
+                
             }
         }
 
@@ -102,8 +113,7 @@ namespace Postogram.InstagramClient.Poster
             }
             catch (Exception e)
             {
-                //TODO
-                // non critical exception at this step
+                _logger.Error(e, "Init from file error");
             }
 
             if (IsAuthenticated)
@@ -112,13 +122,9 @@ namespace Postogram.InstagramClient.Poster
             }
 
             _api = InstaApiBuilder.CreateBuilder()
-                .SetUser(new UserSessionData()
-                {
-                    UserName = _login,
-                    Password = _password
-                })
-                //.UseLogger() TODO: logs
-                //.UseHttpClient() TODO: single http client instance
+                .SetUser(_userData)
+                .UseLogger(new InstaLoggerAdapter(_logger))
+                .UseHttpClient(_httpClient)
                 .Build();
 
             await _api.LoginAsync();
@@ -126,7 +132,7 @@ namespace Postogram.InstagramClient.Poster
 
         private void LoadState()
         {
-            var filePath = FileHelper.GetFile(Location.Application, nameof(InstaPoster), "state.bin");
+            var filePath = _fileHelper.GetFile(Location.Application, nameof(InstaPoster), "state.bin");
 
             using (var stateFileStream = File.Open(filePath, FileMode.OpenOrCreate))
             {
