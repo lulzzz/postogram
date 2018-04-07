@@ -105,6 +105,10 @@
       <Project>{5b840f80-b93e-46d4-a509-521ed2006a40}</Project>
       <Name>Postogram.Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Postogram.EfDal\Postogram.EfDal.csproj">
+      <Project>{E1682637-2707-4C3D-8875-4C2C43C6A479}</Project>
+      <Name>Postogram.EfDal</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Postogram.InstagramClient\Postogram.InstagramClient.csproj">
       <Project>{0639B8CC-F048-45FC-A35D-31DDC05DB688}</Project>
       <Name>Postogram.InstagramClient</Name>
