@@ -1,13 +1,13 @@
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore.Storage;
 using Postogram.DataAccessLayer;
 
 namespace Postogram.EfDal
 {
     public class DbContextTransactionAdapter : ITransaction
     {
-        private readonly DbContextTransaction _transaction;
+        private readonly IDbContextTransaction _transaction;
 
-        public DbContextTransactionAdapter(DbContextTransaction transaction)
+        public DbContextTransactionAdapter(IDbContextTransaction transaction)
         {
             _transaction = transaction;
         }
