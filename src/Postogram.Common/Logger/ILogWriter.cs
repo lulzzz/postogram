@@ -4,6 +4,12 @@ using System.Text;
 
 namespace Postogram.Common.Logger
 {
+    /// <summary>
+    /// Structured log writer
+    /// </summary>
+    /// <remarks>
+    /// Implementations must provide structured logging support e.g. <c>Info("Sample log #{number}", number)</c>
+    /// </remarks>
     public interface ILogWriter
     {
         void Debug(object args, string methodCaller = null);

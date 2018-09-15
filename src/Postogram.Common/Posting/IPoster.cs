@@ -1,11 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Postogram
 {
     public interface IPoster
     {
-        void Post(Content content);
+        Task<PostResult> Post(Content content);
     }
 }
