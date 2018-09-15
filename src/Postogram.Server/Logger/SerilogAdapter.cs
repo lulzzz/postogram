@@ -1,38 +1,36 @@
 using System;
+using Serilog;
 using Postogram.Common;
 using Postogram.Common.Logger;
-using Serilog;
 
 namespace Postogram.Server.Logger
 {
     public class SerilogAdapter : Common.Logger.ILogger
     {
-        private readonly FileHelper _fileHelper;
-
+        private readonly IFilePathHelper _fileHelper;
         public ILogWriter GlobalWriter { get; }
 
-        public SerilogAdapter(FileHelper fileHelper)
+        public SerilogAdapter(IFilePathHelper filePathHelper)
         {
-            _fileHelper = fileHelper;
+            _fileHelper = filePathHelper;
             GlobalWriter = CreateSerilogLogger(null);
         }
 
-        public ILogWriter CreateWriter<T>()
-        {
-            return CreateSerilogLogger(typeof(T));
-        }
-
+        public ILogWriter CreateWriter<T>() => CreateSerilogLogger(typeof(T));
         private SerilogLogWriter CreateSerilogLogger(Type source)
         {
             var logFilesOutp = _fileHelper.GetFile(Location.Log, "log-.txt");
-            Serilog.ILogger seriLogger = new LoggerConfiguration()
+
+            var logger = (Serilog.ILogger) new LoggerConfiguration()
                     .WriteTo.Console()
                     .WriteTo.File(logFilesOutp, rollingInterval: RollingInterval.Day)
                     .CreateLogger();
 
-            seriLogger = source == null ? seriLogger : seriLogger.ForContext(source);
+            logger = source == null
+                ? logger
+                : logger.ForContext(source);
 
-            return new SerilogLogWriter(seriLogger);
+            return new SerilogLogWriter(logger);
         }
     }
 }

@@ -15,22 +15,22 @@ namespace Postogram.Server.Logger
 
         public void Debug(string pattern, params object[] args)
         {
-            _logger.Debug(pattern, propertyValue: args);
+            _logger.Debug(pattern, args);
         }
 
         public void Error(string pattern, params object[] args)
         {
-            _logger.Error(pattern, propertyValue: args);
+            _logger.Error(pattern, args);
         }
 
         public void Info(string pattern, params object[] args)
         {
-            _logger.Information(pattern, propertyValue: args);
+            _logger.Information(pattern, args);
         }
 
         public void Warning(string pattern, params object[] args)
         {
-            _logger.Warning(pattern, propertyValue: args);
+            _logger.Warning(pattern, args);
         }
 
 
