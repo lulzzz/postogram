@@ -13,7 +13,7 @@ namespace Postogram.Server
         //Uses DbModule from EfDal
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterInstance(new FilePathHelper()).As<FilePathHelper>();
+            builder.RegisterType<FilePathHelper>().As<IFilePathHelper>().SingleInstance();
             builder.RegisterType<SerilogAdapter>().As<ILogger>();
 
             builder.RegisterType<AppSettingsConfiguration>().As<IConfiguration>();
@@ -24,7 +24,8 @@ namespace Postogram.Server
 
         private void RegisterConfigurations(ContainerBuilder builder)
         {
-            // for example: builder.RegisterConfigurationSection<InstagramConfiguration>();
+            builder.RegisterConfigurationSection<ApplicationEnviromentConfiguration>();
+            builder.RegisterConfigurationSection<CustomPathsConfiguration>();
         }
     }
 }

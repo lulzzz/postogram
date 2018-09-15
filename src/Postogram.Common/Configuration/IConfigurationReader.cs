@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Postogram.Common.Configuration
 {
@@ -8,5 +6,7 @@ namespace Postogram.Common.Configuration
     {
         T Read<T>(string name);
         T Read<T>(string name, T defaultValue);
+        object Read(string name, Type type);
+        object Read(string name, object defaultValue, Type type);
     }
 }

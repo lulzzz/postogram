@@ -1,17 +1,21 @@
 using System;
 using System.IO;
-using static System.Environment;
 using static System.IO.Path;
+using static System.Environment;
+using Postogram.Common.Configuration;
 
 namespace Postogram.Common
 {
     public class FilePathHelper : IFilePathHelper
     {
-        private readonly ApplicationEnviroment _configuration;
+        private readonly CustomPathsConfiguration _pathsConfig;
+        private readonly ApplicationEnviromentConfiguration _enviromentConfig;
 
-        public FilePathHelper(ApplicationEnviroment configuration)
+        public FilePathHelper(ApplicationEnviromentConfiguration enviromentConfig,
+            CustomPathsConfiguration customPathsConfiguration)
         {
-            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+            _enviromentConfig = enviromentConfig ?? throw new ArgumentNullException(nameof(enviromentConfig));
+            _pathsConfig = customPathsConfiguration ?? throw new ArgumentNullException(nameof(customPathsConfiguration));
         }
 
         public DirectoryInfo GetDirectory(Location location, string subDirectory = null)
@@ -20,26 +24,26 @@ namespace Postogram.Common
             switch (location)
             {
                 //within custom paths
-                case Location.Log when HasCustomPath(_configuration.CustomLogFilesPath):
-                    basePath = _configuration.CustomLogFilesPath;
+                case Location.Log when HasCustomPath(_pathsConfig.CustomLogFilesPath):
+                    basePath = _pathsConfig.CustomLogFilesPath;
                     break;
-                case Location.Temporary when HasCustomPath(_configuration.CustomTemporaryFilesPath):
-                    basePath = _configuration.CustomTemporaryFilesPath;
+                case Location.Temporary when HasCustomPath(_pathsConfig.CustomTemporaryFilesPath):
+                    basePath = _pathsConfig.CustomTemporaryFilesPath;
                     break;
-                case Location.Application when HasCustomPath(_configuration.CustomApplicationFilesPath):
-                    basePath = _configuration.CustomApplicationFilesPath;
+                case Location.Application when HasCustomPath(_pathsConfig.CustomApplicationFilesPath):
+                    basePath = _pathsConfig.CustomApplicationFilesPath;
                     break;
 
                 //without custom pathes
                 case Location.Application:
                     var commonAppData = GetFolderPath(SpecialFolder.CommonApplicationData);
-                    basePath = Combine(commonAppData, _configuration.ApplicationName);
+                    basePath = Combine(commonAppData, _enviromentConfig.ApplicationName);
                     break;
                 case Location.Log:
-                    basePath = GetDirectory(Location.Application, _configuration.LogDirectoryName).FullName;
+                    basePath = GetDirectory(Location.Application, _pathsConfig.LogDirectoryName).FullName;
                     break;
                 case Location.Temporary:
-                    basePath = Combine(GetTempPath(), _configuration.ApplicationName);
+                    basePath = Combine(GetTempPath(), _enviromentConfig.ApplicationName);
                     break;
                 default:
                     throw new NotImplementedException();
