@@ -21,7 +21,7 @@ namespace Postogram.Server.Logger
         {
             var logFilesOutp = _fileHelper.GetFile(Location.Log, "log-.txt");
 
-            var logger' = (Serilog.ILogger) new LoggerConfiguration()
+            var logger = (Serilog.ILogger) new LoggerConfiguration()
                     .WriteTo.Console()
                     .WriteTo.File(logFilesOutp, rollingInterval: RollingInterval.Day)
                     .CreateLogger();
