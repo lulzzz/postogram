@@ -19,14 +19,14 @@ namespace Postogram.InstagramClient.Poster
         private IInstaApi _api;
         private ILogWriter _logger;
 
-        private readonly FileHelper _fileHelper;
+        private readonly IFilePathHelper _fileHelper;
         private readonly UserSessionData _userData;
 
         private static readonly HttpClient _httpClient = new HttpClient();
 
         private bool IsAuthenticated => _api?.IsUserAuthenticated ?? false;
 
-        public InstaPoster(InstagramConfiguration configuration, FileHelper fileHelper, ILogger logger)
+        public InstaPoster(InstagramConfiguration configuration, IFilePathHelper fileHelper, ILogger logger)
         {
             _fileHelper = fileHelper;
             _logger = logger.CreateWriter<InstaPoster>();
@@ -37,11 +37,9 @@ namespace Postogram.InstagramClient.Poster
             };
         }
 
-        public void Post(Content content)
+        public Task<PostResult> Post(Content content)
         {
-            var task = PostAsync(content);
-            task.ConfigureAwait(continueOnCapturedContext: false);
-            task.GetAwaiter().GetResult();
+            throw new NotImplementedException();
         }
 
         public async Task PostAsync(Content content)
@@ -139,6 +137,5 @@ namespace Postogram.InstagramClient.Poster
                 _api.LoadStateDataFromStream(stateFileStream);
             }
         }
-
     }
 }
