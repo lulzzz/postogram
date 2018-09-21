@@ -1,31 +1,29 @@
-using Autofac;
 using Postogram.Common;
-using Postogram.Common.Configuration;
 using Postogram.Common.Logger;
+using Postogram.Common.Container;
+using Postogram.Common.Configuration;
 using Postogram.EfDal;
 using Postogram.Server.Logger;
 using Postogram.Server.Configuration;
 
 namespace Postogram.Server
 {
-    public class ServerModule : Module
+    public class ServerModule : IContainerModule
     {
-        //Uses DbModule from EfDal
-        protected override void Load(ContainerBuilder builder)
+        public void Configure(IConfigurator configurator)
         {
-            builder.RegisterType<FilePathHelper>().As<IFilePathHelper>().SingleInstance();
-            builder.RegisterType<SerilogAdapter>().As<ILogger>();
+            configurator.RegisterSingleton<IFilePathHelper, FilePathHelper>();
+            configurator.Register<ILogger, SerilogAdapter>();
+            configurator.Register<IConfiguration, AppSettingsConfiguration>();
+            RegisterConfigurationSections(configurator);
 
-            builder.RegisterType<AppSettingsConfiguration>().As<IConfiguration>();
-            RegisterConfigurations(builder);
-
-            builder.RegisterModule<DbModule>();
+            configurator.RegisterModule<DbModule>();
         }
 
-        private void RegisterConfigurations(ContainerBuilder builder)
+        private void RegisterConfigurationSections(IConfigurator configurator)
         {
-            builder.RegisterConfigurationSection<ApplicationEnviromentConfiguration>();
-            builder.RegisterConfigurationSection<CustomPathsConfiguration>();
+            configurator.Register<CustomPathsConfiguration>();
+            configurator.Register<ApplicationEnviromentConfiguration>();
         }
     }
 }

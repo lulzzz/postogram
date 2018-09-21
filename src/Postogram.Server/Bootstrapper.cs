@@ -1,6 +1,6 @@
 using System;
-using Autofac;
-using Postogram.Common.Logger;
+using Postogram.Common.Container;
+using Postogram.Server.Container;
 
 namespace Postogram.Server
 {
@@ -20,10 +20,8 @@ namespace Postogram.Server
 
         private IContainer InitContainer()
         {
-            var builder = new ContainerBuilder();
-
+            var builder = new AutofacConfigurator();
             builder.RegisterModule<ServerModule>();
-
             return builder.Build();
         }
     }

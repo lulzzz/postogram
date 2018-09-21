@@ -1,19 +1,13 @@
-using Autofac;
 using Postogram.DataAccessLayer;
+using Postogram.Common.Container;
 
 namespace Postogram.EfDal
 {
-    public class DbModule : Module
+    public class DbModule : IContainerModule
     {
-        protected override void Load(ContainerBuilder builder)
+        public void Configure(IConfigurator configurator)
         {
-            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>();
-
-            RegisterRepositories(builder);
-        }
-
-        private void RegisterRepositories(ContainerBuilder builder)
-        {
+            configurator.Register<IUnitOfWork, UnitOfWork>();
         }
     }
 }
