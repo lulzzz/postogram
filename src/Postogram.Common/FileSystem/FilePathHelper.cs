@@ -9,12 +9,12 @@ namespace Postogram.Common
     public class FilePathHelper : IFilePathHelper
     {
         private readonly CustomPathsConfiguration _pathsConfig;
-        private readonly ApplicationEnviromentConfiguration _enviromentConfig;
+        private readonly ApplicationEnviromentConfiguration _environmentConfig;
 
-        public FilePathHelper(ApplicationEnviromentConfiguration enviromentConfig,
+        public FilePathHelper(ApplicationEnviromentConfiguration environmentConfig,
             CustomPathsConfiguration customPathsConfiguration)
         {
-            _enviromentConfig = enviromentConfig ?? throw new ArgumentNullException(nameof(enviromentConfig));
+            _environmentConfig = environmentConfig ?? throw new ArgumentNullException(nameof(environmentConfig));
             _pathsConfig = customPathsConfiguration ?? throw new ArgumentNullException(nameof(customPathsConfiguration));
         }
 
@@ -34,16 +34,16 @@ namespace Postogram.Common
                     basePath = _pathsConfig.CustomApplicationFilesPath;
                     break;
 
-                //without custom pathes
+                //without custom paths
                 case Location.Application:
                     var commonAppData = GetFolderPath(SpecialFolder.CommonApplicationData);
-                    basePath = Combine(commonAppData, _enviromentConfig.ApplicationName);
+                    basePath = Combine(commonAppData, _environmentConfig.ApplicationName);
                     break;
                 case Location.Log:
                     basePath = GetDirectory(Location.Application, _pathsConfig.LogDirectoryName).FullName;
                     break;
                 case Location.Temporary:
-                    basePath = Combine(GetTempPath(), _enviromentConfig.ApplicationName);
+                    basePath = Combine(GetTempPath(), _environmentConfig.ApplicationName);
                     break;
                 default:
                     throw new NotImplementedException();
