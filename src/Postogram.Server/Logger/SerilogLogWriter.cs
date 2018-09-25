@@ -33,7 +33,6 @@ namespace Postogram.Server.Logger
             _logger.Warning(pattern, args);
         }
 
-
         public void Error(Exception exception, string message)
         {
             _logger.Error(exception, message);

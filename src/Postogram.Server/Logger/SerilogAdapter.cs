@@ -2,10 +2,11 @@ using System;
 using Serilog;
 using Postogram.Common;
 using Postogram.Common.Logger;
+using ILogger = Postogram.Common.Logger.ILogger;
 
 namespace Postogram.Server.Logger
 {
-    public class SerilogAdapter : Common.Logger.ILogger
+    public class SerilogAdapter : ILogger
     {
         private readonly IFilePathHelper _fileHelper;
         public ILogWriter GlobalWriter { get; }
@@ -17,18 +18,20 @@ namespace Postogram.Server.Logger
         }
 
         public ILogWriter CreateWriter<T>() => CreateSerilogLogger(typeof(T));
+
         private SerilogLogWriter CreateSerilogLogger(Type source)
         {
-            var logFilesOutp = _fileHelper.GetFile(Location.Log, "log-.txt");
+            var logFilePath = _fileHelper.GetFile(Location.Log, "log-.txt");
 
             var logger = (Serilog.ILogger) new LoggerConfiguration()
                     .WriteTo.Console()
-                    .WriteTo.File(logFilesOutp, rollingInterval: RollingInterval.Day)
+                    .WriteTo.File(logFilePath, rollingInterval: RollingInterval.Day)
                     .CreateLogger();
 
-            logger = source == null
-                ? logger
-                : logger.ForContext(source);
+            if (source != null)
+            {
+                logger = logger.ForContext(source);
+            }
 
             return new SerilogLogWriter(logger);
         }
