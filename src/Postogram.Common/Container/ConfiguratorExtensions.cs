@@ -16,5 +16,12 @@ namespace Postogram.Common.Container
                 return configurationInstance.GetConfigSection<TConfigSection>();
             }
         }
+
+        public static void RegisterModule<TModule>(this IConfigurator configurator)
+            where TModule : IContainerModule, new()
+        {
+            var module = new TModule();
+            module.Configure(configurator);
+        }
     }
 }
