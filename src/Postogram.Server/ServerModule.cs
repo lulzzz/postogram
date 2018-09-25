@@ -22,8 +22,8 @@ namespace Postogram.Server
 
         private void RegisterConfigurationSections(IConfigurator configurator)
         {
-            configurator.Register<CustomPathsConfiguration>();
-            configurator.Register<ApplicationEnviromentConfiguration>();
+            configurator.RegisterConfigurationSection<CustomPathsConfiguration>();
+            configurator.RegisterConfigurationSection<ApplicationEnviromentConfiguration>();
         }
     }
 }

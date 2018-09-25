@@ -24,13 +24,6 @@ namespace Postogram.Server.Container
             return new AutofacContainer(_containerBuilder.Build());
         }
 
-        public void RegisterModule<TModule>()
-            where TModule : IContainerModule, new()
-        {
-            var module = new TModule();
-            module.Configure(this);
-        }
-
 
         //Per request
         public void Register<TImplementation>()
@@ -77,7 +70,8 @@ namespace Postogram.Server.Container
         public void Register<TAbstraction>(Func<IConfiguratorContext, TAbstraction> fabric)
         {
             _containerBuilder
-                .Register<TAbstraction>(ctx => fabric(new AutofacConfiguratorContext(ctx)));
+                .Register<TAbstraction>(ctx => fabric(new AutofacConfiguratorContext(ctx)))
+                .InstancePerLifetimeScope();
         }
         
         public void RegisterSingleton<TAbstraction>(Func<IConfiguratorContext, TAbstraction> fabric)

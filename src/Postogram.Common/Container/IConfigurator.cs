@@ -16,8 +16,6 @@ namespace Postogram.Common.Container
         void Register<TAbstraction>(Func<IConfiguratorContext, TAbstraction> fabric);
         void RegisterSingleton<TAbstraction>(Func<IConfiguratorContext, TAbstraction> fabric);
 
-        void RegisterModule<TModule>() where TModule : IContainerModule, new();
-
         IContainer Build();
     }
 }
