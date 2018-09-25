@@ -21,6 +21,7 @@ namespace Postogram.InstagramClient.Poster
 
         private readonly IFilePathHelper _fileHelper;
         private readonly UserSessionData _userData;
+        readonly InstagramConfiguration _configuration;
 
         private static readonly HttpClient _httpClient = new HttpClient();
 
@@ -29,12 +30,9 @@ namespace Postogram.InstagramClient.Poster
         public InstaPoster(InstagramConfiguration configuration, IFilePathHelper fileHelper, ILogger logger)
         {
             _fileHelper = fileHelper;
+            _configuration = configuration;
             _logger = logger.CreateWriter<InstaPoster>();
-            _userData = new UserSessionData()
-            {
-                UserName = configuration.Login,
-                Password = configuration.Password
-            };
+            _userData = new UserSessionData();
         }
 
         public Task<PostResult> Post(Content content)
@@ -121,7 +119,7 @@ namespace Postogram.InstagramClient.Poster
 
             _api = InstaApiBuilder.CreateBuilder()
                 .SetUser(_userData)
-                .UseLogger(new InstaLoggerAdapter(_logger))
+                .UseLogger(GetLogger())
                 .UseHttpClient(_httpClient)
                 .Build();
 
@@ -137,5 +135,7 @@ namespace Postogram.InstagramClient.Poster
                 _api.LoadStateDataFromStream(stateFileStream);
             }
         }
+
+        private InstagramLoggerAdapter GetLogger() => new InstagramLoggerAdapter(_logger, _configuration.ToLogRequests);
     }
 }

@@ -47,7 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="InstagramConfiguration.cs" />
-    <Compile Include="Poster\InstaLoggerAdapter.cs" />
+    <Compile Include="Poster\InstagramLoggerAdapter.cs" />
     <Compile Include="Poster\InstaPoster.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

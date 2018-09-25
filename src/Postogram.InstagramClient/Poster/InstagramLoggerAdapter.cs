@@ -1,21 +1,19 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using InstaSharper.Logger;
 using Postogram.Common.Logger;
 
 namespace Postogram.InstagramClient.Poster
 {
-    public class InstaLoggerAdapter : IInstaLogger
+    public class InstagramLoggerAdapter : IInstaLogger
     {
         private readonly ILogWriter _logWriter;
+        private readonly bool _toLogRequests;
 
-        public InstaLoggerAdapter(ILogWriter logWriter)
+        public InstagramLoggerAdapter(ILogWriter logWriter, bool toLogRequests)
         {
             _logWriter = logWriter;
+            _toLogRequests = toLogRequests;
         }
 
         public void LogException(Exception exception)
@@ -30,17 +28,26 @@ namespace Postogram.InstagramClient.Poster
 
         public void LogRequest(HttpRequestMessage request)
         {
-            // no need
+            if (_toLogRequests)
+            {
+                _logWriter.Debug("Request message: {request}", request);
+            }
         }
 
         public void LogRequest(Uri uri)
         {
-            // no need
+            if (_toLogRequests)
+            {
+                _logWriter.Debug("Request uri: {uri}", uri);
+            }
         }
 
         public void LogResponse(HttpResponseMessage response)
         {
-            // no need
+            if (_toLogRequests)
+            {
+                _logWriter.Debug("Response message: {uri}", response);
+            }
         }
     }
 }
