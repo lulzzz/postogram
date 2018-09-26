@@ -12,6 +12,8 @@ namespace Postogram.Server
     {
         public void Configure(IConfigurator configurator)
         {
+            configurator.RegisterModule<DefaultModule>();
+
             configurator.RegisterSingleton<IFilePathHelper, FilePathHelper>();
             configurator.Register<ILogger, SerilogAdapter>();
             configurator.Register<IConfiguration, AppSettingsConfiguration>();
