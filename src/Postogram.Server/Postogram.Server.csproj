@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Postogram.Common\Postogram.Common.csproj" />
     <ProjectReference Include="..\Postogram.EfDal\Postogram.EfDal.csproj" />
+    <ProjectReference Include="..\Postogram.InstagramClient\Postogram.InstagramClient.csproj" />
   </ItemGroup>
 
 </Project>

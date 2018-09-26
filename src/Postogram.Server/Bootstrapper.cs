@@ -2,6 +2,7 @@ using System;
 using Akka.Actor;
 using Postogram.Common.Container;
 using Postogram.Common.Container.Akka;
+using Postogram.InstagramClient.Actors;
 using Postogram.Server.Container;
 
 namespace Postogram.Server
@@ -24,7 +25,12 @@ namespace Postogram.Server
                 var greater = system.ActorOf(resolver.Create<GreaterActor>());
                 greater.Tell(new Greeting("test"));
 
-                while (Console.ReadLine() != "q"){}
+                var instagramPoster = system.ActorOf<InstaPostCoordinatorActor>();
+                while (Console.ReadLine() != "q")
+                {
+                    for(int i = 0; i < 10_000; i++)
+                        instagramPoster.Tell(new PostContentMessage(null, null, i));
+                }
             }
         }
 

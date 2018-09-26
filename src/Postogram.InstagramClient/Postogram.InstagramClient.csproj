@@ -54,6 +54,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Actors\InstaPostCoordinatorActor.cs" />
+    <Compile Include="Actors\ChildActors\InstaPosterActor.cs" />
+    <Compile Include="Actors\Messages.cs" />
     <Compile Include="InstagramProfile.cs" />
     <Compile Include="InstagramConfiguration.cs" />
     <Compile Include="Poster\InstagramLoggerAdapter.cs" />
