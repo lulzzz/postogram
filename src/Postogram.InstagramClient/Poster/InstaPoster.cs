@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using InstaSharper.API;
 using InstaSharper.API.Builder;
@@ -17,25 +18,29 @@ namespace Postogram.InstagramClient.Poster
     public class InstaPoster : IPoster
     { 
         private IInstaApi _api;
-        private ILogWriter _logger;
 
-        private readonly IFilePathHelper _fileHelper;
+        private readonly ILogWriter _logger;
         private readonly UserSessionData _userData;
-        readonly InstagramConfiguration _configuration;
+        private readonly IFilePathHelper _fileHelper;
+        private readonly IHttpClientPool _httpClientPool;
+        private readonly InstagramConfiguration _configuration;
 
-        private static readonly HttpClient _httpClient = new HttpClient();
+        public bool IsAuthenticated => _api?.IsUserAuthenticated ?? false;
 
-        private bool IsAuthenticated => _api?.IsUserAuthenticated ?? false;
-
-        public InstaPoster(InstagramConfiguration configuration, IFilePathHelper fileHelper, ILogger logger)
+        public InstaPoster(InstagramConfiguration configuration,
+            IFilePathHelper fileHelper,
+            ILogger logger,
+            IHttpClientPool httpClientPool)
         {
             _fileHelper = fileHelper;
+            _httpClientPool = httpClientPool;
             _configuration = configuration;
+
             _logger = logger.CreateWriter<InstaPoster>();
             _userData = new UserSessionData();
         }
 
-        public Task<PostResult> Post(Content content)
+        public Task<PostResult> Post(Content content, CancellationToken cancellationToken = default)
         {
             throw new NotImplementedException();
         }
@@ -120,7 +125,7 @@ namespace Postogram.InstagramClient.Poster
             _api = InstaApiBuilder.CreateBuilder()
                 .SetUser(_userData)
                 .UseLogger(GetLogger())
-                .UseHttpClient(_httpClient)
+                .UseHttpClient(_httpClientPool.GetHttpClient(nameof(InstaPoster)))
                 .Build();
 
             await _api.LoginAsync();
