@@ -54,10 +54,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Actors\InstaPosterChildActors\AuthenticatedMessage.cs" />
-    <Compile Include="Actors\InstaPostCoordinatorActor.cs" />
-    <Compile Include="Actors\InstaPosterChildActors\InstaPosterActor.cs" />
-    <Compile Include="Actors\Messages.cs" />
     <Compile Include="InstagramProfile.cs" />
     <Compile Include="InstagramConfiguration.cs" />
     <Compile Include="Poster\InstagramLoggerAdapter.cs" />
@@ -71,7 +67,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="app.config" />
     <None Include="packages.config">
       <SubType>Designer</SubType>
     </None>
